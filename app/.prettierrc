@@ -1,0 +1,10 @@
+{
+  "breakBeforeElse": true,
+  "printWidth": 80,
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "semi": true,
+  "singleQuote": false,
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "tailwindFunctions": ["clsx"]
+}

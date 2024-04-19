@@ -1,0 +1,39 @@
+{
+  "extends": ["next", "prettier", "plugin:tailwindcss/recommended"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js"],
+      "parser": "@typescript-eslint/parser"
+    }
+  ],
+  "plugins": ["@stylistic"],
+  "rules": {
+    "@stylistic/arrow-parens": ["error", "as-needed"],
+    "import/no-unresolved": [2, { "caseSensitive": false }],
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always"
+      }
+    ],
+    "no-console": "warn",
+    "no-continue": 0,
+    "no-unused-vars": "error",
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ],
+    "no-param-reassign": 0
+  },
+  "settings": {
+    "tailwindcss": {}
+  },
+  "tailwindcss/no-custom-classname": [
+    "warn",
+    {
+      "whitelist": ["(?!(texture)\\-).*"]
+    }
+  ]
+}

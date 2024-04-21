@@ -1,5 +1,6 @@
-import { fetchGraphQL } from "../api";
-import { ICategory } from "../../types/posts";
+import { fetchGraphQL, transformGraphQLResponse } from "../api";
+
+import { ICategory, IPost } from "@/types/posts";
 /*
  * QUERIES - POSTS
  */
@@ -91,9 +92,11 @@ export async function getAllPostsForHome(preview) {
   const data = await fetchGraphQL(
     `
     query AllPosts {
-      posts(first: 20, where: { orderby: { field: DATE, order: DESC } }) {
+      posts(first: 8, where: { orderby: { field: DATE, order: DESC } }) {
         edges {
           node {
+            id
+            databaseId
             title
             excerpt
             slug
@@ -101,6 +104,11 @@ export async function getAllPostsForHome(preview) {
             featuredImage {
               node {
                 sourceUrl
+                sizes
+                mediaDetails {
+                  height
+                  width
+                }
               }
             }
             author {
@@ -110,6 +118,16 @@ export async function getAllPostsForHome(preview) {
                 lastName
                 avatar {
                   url
+                }
+              }
+            }
+            categories {
+              edges {
+                node {
+                  id
+                  databaseId
+                  slug
+                  name
                 }
               }
             }
@@ -125,8 +143,8 @@ export async function getAllPostsForHome(preview) {
       },
     },
   );
-
-  return data?.posts;
+  //return data?.posts;
+  return transformGraphQLResponse(data?.posts, "posts") as IPost;
 }
 
 export async function getPostAndMorePosts(slug, preview, previewData) {

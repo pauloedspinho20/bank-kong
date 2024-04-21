@@ -3,13 +3,13 @@ import ErrorPage from "next/error";
 import Head from "next/head";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Container from "../../components/container";
-import PostBody from "../../components/post-body";
+import PostBody from "../../components/post/post-body";
 import MoreStories from "../../components/more-stories";
-import Header from "../../components/header";
-import PostHeader from "../../components/post-header";
+import Header from "../../components/layout/header";
+import PostHeader from "../../components/post/post-header";
 import SectionSeparator from "../../components/section-separator";
 import Layout from "../../components/layout";
-import PostTitle from "../../components/post-title";
+import PostTitle from "../../components/post/post-title";
 import Tags from "../../components/tags";
 import {
   getAllPostsWithSlug,

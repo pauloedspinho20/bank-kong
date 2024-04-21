@@ -58,7 +58,7 @@ export async function getAllExpensesWithSlug() {
         }
   `);
 
-  return transformGraphQLResponse(data.expenses) as IExpense[];
+  return transformGraphQLResponse(data.expenses, "expenses") as IExpense[];
 }
 
 /* Get current expense and the next ones */

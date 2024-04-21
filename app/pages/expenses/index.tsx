@@ -17,9 +17,9 @@ import {
 
 import Container from "@/components/container";
 import Expense from "@/components/expense";
-import Header from "@/components/header";
+import Header from "@/components/layout/header";
 import Layout from "@/components/layout";
-import PostTitle from "@/components/post-title";
+import PostTitle from "@/components/post/post-title";
 import SectionSeparator from "@/components/section-separator";
 
 import { getCategories } from "@/wp-api/queries/posts";

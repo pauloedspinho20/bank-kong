@@ -1,36 +1,39 @@
 import Head from "next/head";
 import { GetStaticProps } from "next";
-import Container from "../components/container";
-import MoreStories from "../components/more-stories";
-import HeroPost from "../components/hero-post";
-import Intro from "../components/intro";
-import Layout from "../components/layout";
+
+import { ScrollToTop } from "@/components/scroll-to-top";
+
+import About from "@/components/section/about";
+import Hero from "@/components/section/hero";
+import Newsletter from "@/components/section/newsletter";
+import Pricing from "@/components/section/pricing";
+import Posts from "@/components/section/posts";
+
+import FAQ from "@/components/section/faq";
+import Layout from "@/components/layout";
+import Footer from "@/components/layout/footer";
+
 import { getAllPostsForHome } from "../wp-api/queries/posts";
-import { CMS_NAME } from "../lib/constants";
+import AsideMenu from "@/components/layout/aside-munu";
 
-export default function Index({ allPosts: { edges }, preview }) {
-  const heroPost = edges[0]?.node;
-  const morePosts = edges.slice(1);
-
+export default function Index({ allPosts, preview }) {
+  console.log("allPosts", allPosts);
   return (
     <Layout preview={preview}>
-      <Head>
-        <title>{`Next.js Blog Example with ${CMS_NAME}`}</title>
-      </Head>
-      <Container>
-        <Intro />
-        {heroPost && (
-          <HeroPost
-            title={heroPost.title}
-            coverImage={heroPost.featuredImage}
-            date={heroPost.date}
-            author={heroPost.author}
-            slug={heroPost.slug}
-            excerpt={heroPost.excerpt}
-          />
-        )}
-        {morePosts.length > 0 && <MoreStories posts={morePosts} />}
-      </Container>
+      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <AsideMenu />
+
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+          <Hero />
+          <About />
+          <Posts posts={allPosts} />
+          <Pricing />
+          <Newsletter />
+          <FAQ />
+          <Footer />
+          <ScrollToTop />
+        </div>
+      </div>
     </Layout>
   );
 }
@@ -38,6 +41,7 @@ export default function Index({ allPosts: { edges }, preview }) {
 export const getStaticProps: GetStaticProps = async ({ preview = false }) => {
   const allPosts = await getAllPostsForHome(preview);
 
+  console.log("aaaaaa", allPosts);
   return {
     props: { allPosts, preview },
     revalidate: 10,

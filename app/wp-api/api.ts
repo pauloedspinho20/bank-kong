@@ -1,15 +1,31 @@
 const GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL;
 const REST_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_URL;
 
-export function transformGraphQLResponse(data) {
+export function transformGraphQLResponse(data: any, type: string) {
   return data.edges.map((edge) => {
     const { node } = edge;
-    const { author, categories, ...rest } = node;
-    return {
-      ...rest,
-      author: author.node,
-      categories: categories.edges.map(({ node }) => node),
-    };
+    const { author, categories, featuredImage, posts, ...rest } = node;
+
+    switch (type) {
+      case "posts":
+        /*  return posts; */
+        return {
+          ...rest,
+          author: author.node,
+          categories: categories?.edges?.map(({ node }) => node),
+          featuredImage: featuredImage?.node,
+        };
+      case "expenses":
+        return {
+          ...rest,
+          author: author.node,
+          categories: categories?.edges?.map(({ node }) => node),
+        };
+      default:
+        return {
+          ...rest,
+        };
+    }
   });
 }
 

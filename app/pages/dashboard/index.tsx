@@ -31,9 +31,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AsideMenu from "@/components/aside-munu";
+import AsideMenu from "@/components/layout/aside-munu";
 import Layout from "@/components/layout";
-import Header from "@/components/header";
+import Header from "@/components/layout/header";
 import Expense from "@/components/expense";
 
 import { getCategories } from "@/wp-api/queries/posts";

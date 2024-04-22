@@ -1,12 +1,7 @@
-![WordPress + React Starter Kit](frontend/static/images/wordpress-plus-react-header.png)
-
-[![Build status](https://travis-ci.org/postlight/headless-wp-starter.svg)](https://travis-ci.org/postlight/headless-wp-starter)
-
-[Postlight](https://postlight.com)'s Headless WordPress + React Starter Kit is an automated toolset that will spin up three things:
+**Wordpress Headless + Next.js**
 
 1.  A WordPress backend that serves its data via the [WP REST API](https://developer.wordpress.org/rest-api/) and [GraphQL](http://graphql.org/).
-2.  A sample React frontend powered by the [WP GraphQL API](https://www.wpgraphql.com/), which supports posts, pages, categories, menus, search, and user sign-in.
-3.  Another sample server-side rendered React frontend using [Next.js](https://github.com/zeit/next.js/) powered by the WP REST API.
+2.  A sample Next.js frontend powered by the [WP GraphQL API](https://www.wpgraphql.com/), which supports posts, pages, categories, menus, search, and user sign-in.
 
 You can read all about it in [this handy introduction](https://postlight.com/trackchanges/introducing-postlights-wordpress-react-starter-kit).
 
@@ -41,33 +36,13 @@ You can follow the Docker output to see build progress and logs:
 
 Alternatively, you can use some useful Docker tools like Kitematic and/or VSCode Docker plugin to follow logs, start / stop / remove containers and images.
 
-_Optional:_ you can run the frontend locally while WordPress still runs on Docker:
+## Frontend
 
-    docker-compose up -d wp-headless
+You can run the frontend locally:
+
     cd frontend && yarn && yarn start
 
 Once the containers are running, you can visit the React frontends and backend WordPress admin in your browser.
-
-## Frontend
-
-This starter kit provides two frontend containers:
-
-- `frontend` container powered by the WP REST API is server-side rendered using Next.js, and exposed on port `3000`: [http://localhost:3000](http://localhost:3000)
-- `frontend-graphql` container powered by GraphQL, exposed on port `3001`: [http://localhost:3001](http://localhost:3001)
-
-Here's what the frontend looks like:
-
-![Frontend Screencast](/wordpress-react-starter-kit-fe.gif)
-
-You can follow the `yarn start` output by running docker-compose `logs` command followed by the container name. For example:
-
-    docker-compose logs -f frontend
-
-If you need to restart that process, restart the container:
-
-    docker-compose restart frontend
-
-**PS:** Browsing the Next.js frontend in development mode is relatively slow due to the fact that pages are being built on demand. In a production environment, there would be a significant improvement in page load.
 
 ## Backend
 
@@ -110,7 +85,7 @@ To import data from a mysqldump with `mysql`, run:
 
 ## Import Data from Another WordPress Installation
 
-You can use a plugin called [WP Migrate DB Pro](https://deliciousbrains.com/wp-migrate-db-pro/) to connect to another WordPress installation and import data from it. (A Pro license will be required.)
+You can use a plugin called All In On to connect to another WordPress installation and import data from it. (A Pro license will be required.)
 
 To do so, first set `MIGRATEDB_LICENSE` & `MIGRATEDB_FROM` in `.env` and recreate containers to enact the changes.
 

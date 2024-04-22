@@ -55,6 +55,7 @@ wp plugin install --activate --force \
     wp-rest-api-v2-menus \
     jwt-authentication-for-wp-rest-api \
     wp-graphql \
+    all-in-one-wp-migration \
     https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.0.zip \
     https://github.com/wp-graphql/wp-graphql-acf/archive/master.zip \
     /var/www/plugins/*.zip

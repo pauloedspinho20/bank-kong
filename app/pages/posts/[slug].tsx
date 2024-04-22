@@ -17,7 +17,7 @@ import {
 } from "@/wp-api/queries/posts";
 import { CMS_NAME } from "../../lib/constants";
 
-export default function Post({ post, posts, preview }) {
+export default function Post({ post, posts, preview }: any) {
   const router = useRouter();
   const morePosts = posts?.edges;
 
@@ -70,7 +70,8 @@ export const getStaticProps: GetStaticProps = async ({
   preview = false,
   previewData,
 }) => {
-  const data = await getPostAndMorePosts(params?.slug, preview, previewData);
+  const slug = params?.slug as string;
+  const data = await getPostAndMorePosts(slug, preview, previewData);
 
   return {
     props: {
@@ -86,7 +87,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const allPosts = await getAllPostsWithSlug();
 
   return {
-    paths: allPosts.edges.map(({ node }) => `/posts/${node.slug}`) || [],
+    paths: allPosts.edges.map(({ node }: any) => `/posts/${node.slug}`) || [],
     fallback: true,
   };
 };

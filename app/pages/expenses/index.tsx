@@ -38,8 +38,8 @@ interface Props {
 export default function Expenses({ categories, expenses, preview }: Props) {
   const updateCategories = useGlobalStore((state) => state.updateCategories);
   const updateExpenses = useExpenseStore((state) => state.updateExpenses);
-  const totalValue = useExpenseStore((state) => state.totalValue);
-  const updateTotalValue = useExpenseStore((state) => state.updateTotalValue);
+  const totalIncome = useExpenseStore((state) => state.totalIncome);
+  const updateTotalIncome = useExpenseStore((state) => state.updateTotalIncome);
   const exp = useExpenseStore((state) => state.expenses);
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function Expenses({ categories, expenses, preview }: Props) {
 
   useEffect(() => {
     updateExpenses(expenses);
-    updateTotalValue();
+    updateTotalIncome();
   }, [expenses]);
 
   const router = useRouter();
@@ -70,7 +70,7 @@ export default function Expenses({ categories, expenses, preview }: Props) {
                 <DrawerTrigger>Create Expense</DrawerTrigger>
 
                 <div className="relative flex flex-col">
-                  <h1>Total: {totalValue}</h1>
+                  <h1>Total: {totalIncome}</h1>
                   <h1>Add Expense</h1>
                   <Expense />
 

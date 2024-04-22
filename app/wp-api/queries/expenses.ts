@@ -58,11 +58,22 @@ export async function getAllExpensesWithSlug() {
         }
   `);
 
+  console.log("data.expensessss", data.expenses.edges[0]);
+
+  console.log(
+    "transformGraphQLResponse",
+    transformGraphQLResponse(data.expenses, "expenses"),
+  );
+
   return transformGraphQLResponse(data.expenses, "expenses") as IExpense[];
 }
 
 /* Get current expense and the next ones */
-export async function getExpenseAndMoreExpenses(slug, preview, previewData) {
+export async function getExpenseAndMoreExpenses(
+  slug: string,
+  preview: boolean,
+  previewData: any,
+) {
   try {
     const expensePreview = preview && previewData?.post;
     // The slug may be the id of an unpublished post
@@ -141,7 +152,7 @@ export async function getExpenseAndMoreExpenses(slug, preview, previewData) {
 
     // Filter out the main post
     data.expenses.edges = data.expenses.edges.filter(
-      ({ node }) => node.slug !== slug,
+      ({ node }: any) => node.slug !== slug,
     );
     // If there are still 3 posts, remove the last one
     if (data.expenses.edges.length > 2) data.expenses.edges.pop();

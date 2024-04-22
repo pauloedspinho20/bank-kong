@@ -51,7 +51,7 @@ export async function createPost({ excerpt, title, content }: CreatePostProps) {
 
 /* Create new category */
 
-export async function createCategory(name) {
+export async function createCategory(name: string) {
   const data = await fetchGraphQL(
     `
       mutation {

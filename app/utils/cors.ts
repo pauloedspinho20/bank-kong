@@ -1,4 +1,4 @@
-const allowCors = (fn) => async (req, res) => {
+const allowCors = (fn: any) => async (req: any, res: any) => {
   res.setHeader("Access-Control-Allow-Credentials", true);
   res.setHeader("origin", "https://nextjs-graphql-server-client.vercel.app");
   res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");

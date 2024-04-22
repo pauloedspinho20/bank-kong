@@ -1,6 +1,6 @@
 import { NextApiResponse } from "next";
 
-export default async function exit(_, res: NextApiResponse) {
+export default async function exit(_: any, res: NextApiResponse) {
   // Exit Draft Mode by removing the cookie
   res.setDraftMode({ enable: false });
 

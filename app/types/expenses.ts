@@ -1,21 +1,23 @@
 import { ICategory } from "./posts";
 
-export interface IExpense extends INodeWP {
+export interface IExpenseBase extends INodeWP {
   author?: IAuthor | number;
-  content: string;
+  content?: string;
   categories?: ICategory[];
+  date?: string;
+  formatedDate?: Date;
+  title?: string;
+}
+export interface IExpense extends IExpenseBase {
   expense: {
     fieldGroupName: string;
     value: number;
     type: "income" | "outcome";
   };
-  title: string;
 }
 
-export interface ICreateExpense {
-  title: string;
-  content: string;
-  categories: ICategory[];
-  value: string | number;
-  type;
+export interface IExpensePOST extends IExpenseBase {
+  value?: string | number;
+  type?: string;
+  requestType: "create" | "update" | "delete";
 }

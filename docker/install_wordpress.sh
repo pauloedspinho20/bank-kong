@@ -55,14 +55,14 @@ wp plugin install --activate --force \
     wp-rest-api-v2-menus \
     jwt-authentication-for-wp-rest-api \
     wp-graphql \
-    https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.4.1.zip \
+    https://github.com/wp-graphql/wp-graphql-jwt-authentication/archive/refs/tags/v0.7.0.zip \
     https://github.com/wp-graphql/wp-graphql-acf/archive/master.zip \
     /var/www/plugins/*.zip
 
 wp term update category 1 --name="Sample Category"
 wp post delete 1 2
 
-wp import /var/www/postlightheadlesswpstarter.wordpress.xml --authors=skip --skip=attachment
+wp import /var/www/bankkong.WordPress.2024-04-22 --authors=skip --skip=attachment
 
 wp media import /var/www/images/Graphql2.png --featured_image \
   --post_id=$(wp post list --field=ID --name=what-do-you-need-to-know-about-graphql)

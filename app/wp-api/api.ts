@@ -1,25 +1,29 @@
+import { dateStringToDate, getFormatedDate } from "@/utils/format";
+
 const GRAPHQL_URL = process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL;
 const REST_URL = process.env.NEXT_PUBLIC_WORDPRESS_REST_URL;
 
 export function transformGraphQLResponse(data: any, type: string) {
-  return data.edges.map((edge) => {
+  return data.edges.map((edge: any) => {
     const { node } = edge;
-    const { author, categories, featuredImage, posts, ...rest } = node;
+    const { author, categories, featuredImage, ...rest } = node;
 
     switch (type) {
       case "posts":
-        /*  return posts; */
         return {
           ...rest,
           author: author.node,
-          categories: categories?.edges?.map(({ node }) => node),
+          categories: categories?.edges?.map(({ node }: any) => node),
           featuredImage: featuredImage?.node,
+          formatedDate: getFormatedDate(dateStringToDate(node.date)),
         };
       case "expenses":
         return {
           ...rest,
           author: author.node,
-          categories: categories?.edges?.map(({ node }) => node),
+          categories: categories?.edges?.map(({ node }: any) => node),
+          formatedDate: dateStringToDate(node.date).toISOString(),
+          // formatedDates: dateStringToDate(node.date).toUTCString(),
         };
       default:
         return {
@@ -30,12 +34,10 @@ export function transformGraphQLResponse(data: any, type: string) {
 }
 
 function getRequestHeaders() {
-  const headers = { "Content-Type": "application/json" };
-
-  if (process.env.NEXT_PUBLIC_WORDPRESS_AUTH_REFRESH_TOKEN) {
-    headers["Authorization"] =
-      `Bearer ${process.env.NEXT_PUBLIC_WORDPRESS_AUTH_REFRESH_TOKEN}`;
-  }
+  const headers = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${process.env.NEXT_PUBLIC_WORDPRESS_AUTH_REFRESH_TOKEN}`,
+  };
 
   return headers;
 }
@@ -45,6 +47,10 @@ export async function fetchGraphQL(
   { variables }: Record<string, any> = {},
 ) {
   const headers = getRequestHeaders();
+
+  if (!GRAPHQL_URL) {
+    throw new Error("GRAPHQL_URL is not defined");
+  }
 
   // WPGraphQL Plugin must be enabled
   const res = await fetch(GRAPHQL_URL, {
@@ -65,7 +71,7 @@ export async function fetchGraphQL(
 
 interface FetchRestProps {
   endpoint: string;
-  method: "GET" | "POST";
+  method: "GET" | "POST" | "DELETE";
   postData: any;
 }
 

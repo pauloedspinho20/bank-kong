@@ -1,52 +1,78 @@
 {
-    "key": "group_661720f351d3d",
-    "title": "Expense",
-    "fields": [
-        {
-            "key": "field_661720f379cce",
-            "label": "Value",
-            "name": "value",
-            "aria-label": "",
-            "type": "number",
-            "instructions": "",
-            "required": 1,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "show_in_graphql": 1,
-            "default_value": "",
-            "min": 0,
-            "max": "",
-            "placeholder": "",
-            "step": "",
-            "prepend": "",
-            "append": ""
-        }
-    ],
-    "location": [
-        [
-            {
-                "param": "post_type",
-                "operator": "==",
-                "value": "expense"
-            }
-        ]
-    ],
-    "menu_order": 0,
-    "position": "normal",
-    "style": "default",
-    "label_placement": "top",
-    "instruction_placement": "label",
-    "hide_on_screen": "",
-    "active": true,
-    "description": "Value",
-    "show_in_rest": 1,
-    "show_in_graphql": 1,
-    "graphql_field_name": "expense",
-    "map_graphql_types_from_location_rules": 0,
-    "graphql_types": "",
-    "modified": 1712792498
+  "key": "group_661720f351d3d",
+  "title": "Expense",
+  "fields": [
+    {
+      "key": "field_661720f379cce",
+      "label": "Value",
+      "name": "value",
+      "aria-label": "",
+      "type": "number",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "show_in_graphql": 1,
+      "default_value": "",
+      "min": 0,
+      "max": "",
+      "placeholder": "",
+      "step": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_661ec08f58127",
+      "label": "Type",
+      "name": "type",
+      "aria-label": "",
+      "type": "radio",
+      "instructions": "",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "show_in_graphql": 1,
+      "choices": {
+        "income": "income",
+        "outcome": "outcome"
+      },
+      "default_value": "income",
+      "return_format": "array",
+      "allow_null": 0,
+      "other_choice": 0,
+      "layout": "vertical",
+      "save_other_choice": 0
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "expense"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Expense",
+  "show_in_rest": 1,
+  "show_in_graphql": 1,
+  "graphql_field_name": "expense",
+  "map_graphql_types_from_location_rules": 0,
+  "graphql_types": "",
+  "modified": 1713565008
 }

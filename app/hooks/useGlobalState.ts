@@ -38,28 +38,38 @@ export const useGlobalStore = create<GlobalState & GlobalAction>()((set) => ({
 
 type ExpenseState = {
   expenses: IExpense[];
-  totalValue: number;
+  totalIncome: number;
+  totalOutcome: number;
 };
 
 type ExpenseAction = {
   updateExpenses: (expenses: ExpenseState["expenses"]) => void;
-  updateTotalValue: () => void;
+  updateTotalIncome: () => void;
+  updateTotalOutcome: () => void;
 };
 
 export const useExpenseStore = create<ExpenseState & ExpenseAction>()(
   (set) => ({
     expenses: [],
-    totalValue: 0,
+    totalIncome: 0,
+    totalOutcome: 0,
     updateExpenses: (expenses) =>
       set(() => ({
         expenses: expenses,
       })),
-    updateTotalValue: () =>
+    updateTotalIncome: () =>
       set((state) => ({
-        totalValue: state.expenses?.reduce(
-          (total, expense) => total + expense.expense.value,
-          0,
-        ),
+        totalIncome:
+          state.expenses
+            ?.filter((e) => e.expense.type === "income")
+            ?.reduce((total, expense) => total + expense.expense.value, 0) | 0,
+      })),
+    updateTotalOutcome: () =>
+      set((state) => ({
+        totalOutcome:
+          state.expenses
+            ?.filter((e) => e.expense.type === "outcome")
+            ?.reduce((total, expense) => total + expense.expense.value, 0) | 0,
       })),
   }),
 );

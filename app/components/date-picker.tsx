@@ -1,6 +1,7 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
+/* import * as React from "react"; */
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 
@@ -13,8 +14,28 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-export function DatePickerDemo() {
-  const [date, setDate] = React.useState<Date>();
+interface Props {
+  className?: string;
+  defaultDate: Date | undefined;
+  onDateChange: (date: Date | undefined) => void;
+}
+
+export default function DatePicker({
+  className,
+  onDateChange,
+  defaultDate = undefined,
+}: Props) {
+  const [date, setDate] = useState<Date>();
+
+  console.log("DATEPICKER", date);
+  const handleDateSelect = (selectedDate: Date | undefined) => {
+    setDate(selectedDate);
+    onDateChange(selectedDate);
+  };
+
+  useEffect(() => {
+    setDate(defaultDate);
+  }, [defaultDate]);
 
   return (
     <Popover>
@@ -22,19 +43,20 @@ export function DatePickerDemo() {
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-full justify-start rounded text-left font-normal",
             !date && "text-muted-foreground",
+            className,
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? format(date, "PPP") : <span>Pick a date</span>}
+          {date ? format(date, "dd/MM/yyyy") : <span>Pick date</span>}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
         <Calendar
           mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleDateSelect}
           initialFocus
         />
       </PopoverContent>

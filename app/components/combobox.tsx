@@ -37,7 +37,7 @@ export function Combobox({
   return (
     <div className={className}>
       <Select name={name} onValueChange={selectedValue} defaultValue={value}>
-        <SelectTrigger className="min-w-[200px]">
+        <SelectTrigger className="min-w-[180px] rounded">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>

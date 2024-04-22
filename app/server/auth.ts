@@ -57,8 +57,8 @@ export const authOptions: NextAuthOptions = {
         console.log("creadentiuals", credentials, "req", req);
 
         const res = await LoginUser({
-          username: credentials.username,
-          password: credentials.password,
+          username: credentials?.username || "",
+          password: credentials?.password || "",
         });
 
         if (res.errors) {

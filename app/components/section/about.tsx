@@ -1,9 +1,6 @@
-import Statistics from "./statistics";
-import Image from "next/image";
-
 export default function About() {
   return (
-    <section id="about" className="container py-24 sm:py-32">
+    <section id="about" className="container py-10">
       <div className="rounded-lg border bg-muted/50 py-12">
         <div className="flex flex-col-reverse gap-8 px-6 md:flex-row md:gap-12">
           <div className="bg-green-0 flex flex-col justify-between">
@@ -12,18 +9,18 @@ export default function About() {
                 <span className="bg-gradient-to-b from-primary/60 to-primary bg-clip-text text-transparent">
                   About{" "}
                 </span>
-                Company
+                Paulo Pinho
               </h2>
               <p className="mt-4 text-xl text-muted-foreground">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit
-                amet, consectetur adipiscing elit.
+                I'm Paulo Pinho, a Portuguese Frontend Web Developer (Fullstack
+                experience) with expertise in React.js, Next.js, Node.js, NFT
+                marketplaces, Smart Contracts and Web3. I've gained extensive
+                experience in developing user-friendly and responsive web
+                applications using the industry standard frameworks. My
+                proficiency extends to Wordpress, eCommerce, Blockchain, CSS
+                methodologies and testing.
               </p>
             </div>
-
-            <Statistics />
           </div>
         </div>
       </div>

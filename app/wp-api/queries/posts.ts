@@ -5,7 +5,7 @@ import { ICategory, IPost } from "@/types/posts";
  * QUERIES - POSTS
  */
 
-export async function getPreviewPost(id, idType = "DATABASE_ID") {
+export async function getPreviewPost(id: number, idType = "DATABASE_ID") {
   const data = await fetchGraphQL(
     `
     query PreviewPost($id: ID!, $idType: PostIdType!) {
@@ -88,7 +88,7 @@ export async function getAllPosts() {
   return data?.posts;
 }
 
-export async function getAllPostsForHome(preview) {
+export async function getAllPostsForHome(preview: boolean) {
   const data = await fetchGraphQL(
     `
     query AllPosts {
@@ -147,7 +147,11 @@ export async function getAllPostsForHome(preview) {
   return transformGraphQLResponse(data?.posts, "posts") as IPost;
 }
 
-export async function getPostAndMorePosts(slug, preview, previewData) {
+export async function getPostAndMorePosts(
+  slug: string,
+  preview: boolean,
+  previewData: any,
+) {
   const postPreview = preview && previewData?.post;
   // The slug may be the id of an unpublished post
   const isId = Number.isInteger(Number(slug));
@@ -250,7 +254,9 @@ export async function getPostAndMorePosts(slug, preview, previewData) {
   }
 
   // Filter out the main post
-  data.posts.edges = data.posts.edges.filter(({ node }) => node.slug !== slug);
+  data.posts.edges = data.posts.edges.filter(
+    ({ node }: any) => node.slug !== slug,
+  );
   // If there are still 3 posts, remove the last one
   if (data.posts.edges.length > 2) data.posts.edges.pop();
 
@@ -286,8 +292,10 @@ export async function getCategories() {
     }`,
   );
 
-  data.categories.nodes.map((category) => (category.selected = false));
+  data.categories.nodes.map(
+    (category: ICategory) => (category.selected = false),
+  );
   /* data.categories.nodes.filter((e) => e.slug !== "uncategorized"); // TODO: Remove Smple Category */
-
+  console.log("data.categories.nodes", data.categories.nodes);
   return data.categories.nodes as ICategory[];
 }

@@ -43,21 +43,19 @@ export default function Login() {
         callbackUrl: "/dashboard",
       });
 
-      if (req.ok) {
+      if (req?.ok) {
         setSent(true);
         setUsername("");
         setPassword("");
       } else {
-        setFormError(req.error || "Please try again");
+        setFormError(req?.error || "Please try again");
       }
       setSubmitting(false);
-    } catch (error) {
+    } catch (error: any) {
       setFormError(error);
       setSubmitting(false);
     }
   };
-
-  console.log("session", session);
 
   if (session) {
     return (

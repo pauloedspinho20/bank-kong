@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Theme for the Postlight Headless WordPress Starter Kit.
  *

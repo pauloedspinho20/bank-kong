@@ -1,6 +1,6 @@
 import styles from "./post-body.module.css";
 
-export default function PostBody({ content }) {
+export default function PostBody({ content }: any) {
   return (
     <div className="mx-auto max-w-2xl">
       <div

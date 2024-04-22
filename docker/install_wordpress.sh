@@ -29,8 +29,8 @@ wp core download --force
     --dbuser="$WORDPRESS_DB_USER" \
     --dbpass="$WORDPRESS_DB_PASSWORD"
 
-wp config set JWT_AUTH_SECRET_KEY 'your-secret-here'
-wp config set GRAPHQL_JWT_AUTH_SECRET_KEY 'your-secret-here'
+wp config set JWT_AUTH_SECRET_KEY '/{h<A`(p)<5^Gi!&B$Kd2yi-LEv464B3{J<$~vQS-@-Z_c-+R4[)j+W,dROVjdr:'
+wp config set GRAPHQL_JWT_AUTH_SECRET_KEY '/{h<A`(p)<5^Gi!&B$Kd2yi-LEv464B3{J<$~vQS-@-Z_c-+R4[)j+W,dROVjdr:'
 
 wp core install \
     --url="$WORDPRESS_URL" \
@@ -43,7 +43,7 @@ wp core install \
 wp option update blogdescription "$WORDPRESS_DESCRIPTION"
 wp rewrite structure "$WORDPRESS_PERMALINK_STRUCTURE"
 
-wp theme activate postlight-headless-wp
+wp theme activate twentytwentyfour
 wp theme delete twentytwenty twentytwentyone twentytwentytwo
 
 wp plugin delete akismet hello
@@ -62,7 +62,7 @@ wp plugin install --activate --force \
 wp term update category 1 --name="Sample Category"
 wp post delete 1 2
 
-wp import /var/www/bankkong.WordPress.2024-04-22 --authors=skip --skip=attachment
+wp import /var/www/bankkong.WordPress.2024-04-22.xml --authors=skip --skip=attachment
 
 wp media import /var/www/images/Graphql2.png --featured_image \
   --post_id=$(wp post list --field=ID --name=what-do-you-need-to-know-about-graphql)

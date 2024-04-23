@@ -24,7 +24,5 @@ services:
         volumes:
             - ./wordpress:/var/www/html
             - ./docker/install_wordpress.sh:/usr/local/bin/install_wordpress
-            - ./docker/migratedb_import.sh:/usr/local/bin/migratedb_import
-            - ./docker/bankkong.WordPress.2024-04-22.xml:/var/www/bankkong.WordPress.2024-04-22.xml
             - ./docker/images:/var/www/images
             - ./docker/plugins:/var/www/plugins

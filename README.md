@@ -72,6 +72,10 @@ You can also run a mysql shell on the container:
 
     docker exec db-headless mysql -hdb-headless -uwp_headless -pwp_headless wp_headless
 
+Export database
+
+    docker exec wp-headless wp db export backup.sql
+
 ## Reinstall/Import
 
 To reinstall WordPress from scratch, run:

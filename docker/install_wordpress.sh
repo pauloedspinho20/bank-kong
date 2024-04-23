@@ -51,7 +51,6 @@ wp plugin install --activate --force \
     acf-to-wp-api \
     advanced-custom-fields \
     custom-post-type-ui \
-    wordpress-importer \
     wp-rest-api-v2-menus \
     jwt-authentication-for-wp-rest-api \
     wp-graphql \
@@ -63,15 +62,23 @@ wp plugin install --activate --force \
 wp term update category 1 --name="Sample Category"
 wp post delete 1 2
 
-wp import /var/www/bankkong.WordPress.2024-04-22.xml --authors=skip --skip=attachment
+wp import /var/www/backup.sql --skip=attachment
 
-wp media import /var/www/images/Graphql2.png --featured_image \
-  --post_id=$(wp post list --field=ID --name=what-do-you-need-to-know-about-graphql)
-wp media import /var/www/images/19-word-press-without-shame-0.png --featured_image \
-  --post_id=$(wp post list --field=ID --name=wordpress-without-shame)
-wp media import /var/www/images/cropped-hal-gatewood-tZc3vjPCk-Q-unsplash.jpg --featured_image \
-  --post_id=$(wp post list --field=ID --name=why-bother-with-a-headless-cms)
-wp media import /var/www/images/careers-photo-opt.jpg --featured_image \
-  --post_id=$(wp post list --field=ID --post_type=page --name=postlight-careers)
+wp media import /var/www/images/article1.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=exploring-the-intersection-of-web3-and-gaming)
+wp media import /var/www/images/article2.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=building-user-friendly-web-applications-with-next-js)
+wp media import /var/www/images/article3.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=navigating-the-world-of-web3)
+wp media import /var/www/images/article4.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=crafting-cutting-edge-web-experiences)
+wp media import /var/www/images/article5.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=collaborating-with-confidence-partnering-with-paulo-pinho)
+wp media import /var/www/images/article6.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=mastering-modern-ui-design-with-tailwind-css-and-shadcn-ui)
+wp media import /var/www/images/article7.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=building-secure-authentication-systems-with-nextauth-js-zustand-and-three-js)
+wp media import /var/www/images/article8.jpg --featured_image \
+  --post_id=$(wp post list --field=ID --name=empowering-content-management-with-wordpress-acf-custom-post-types-and-rest-and-graphql-api)
 
 echo "Great. You can now log into WordPress at: $WORDPRESS_URL/wp-admin ($WORDPRESS_ADMIN_USER/$WORDPRESS_ADMIN_PASSWORD)"

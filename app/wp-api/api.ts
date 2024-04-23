@@ -51,21 +51,25 @@ export async function fetchGraphQL(
     throw new Error("GRAPHQL_URL is not defined");
   }
 
-  // WPGraphQL Plugin must be enabled
-  const res = await fetch(GRAPHQL_URL, {
-    headers,
-    method: "POST",
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-  });
+  try {
+    // WPGraphQL Plugin must be enabled
+    const res = await fetch(GRAPHQL_URL, {
+      headers,
+      method: "POST",
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+    });
 
-  const json = await res.json();
-  if (json.errors) {
-    return json;
+    const json = await res.json();
+    if (json.errors) {
+      return json;
+    }
+    return json.data;
+  } catch (error) {
+    console.log("ERRRROR", error);
   }
-  return json.data;
 }
 
 interface FetchRestProps {

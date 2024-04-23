@@ -144,7 +144,11 @@ export async function getAllPostsForHome(preview: boolean) {
     },
   );
 
-  return transformGraphQLResponse(data?.posts, "posts") as IPost;
+  if (data) {
+    return transformGraphQLResponse(data?.posts, "posts") as IPost;
+  }
+
+  return null;
 }
 
 export async function getPostAndMorePosts(
@@ -292,10 +296,14 @@ export async function getCategories() {
     }`,
   );
 
-  data.categories.nodes.map(
-    (category: ICategory) => (category.selected = false),
-  );
-  /* data.categories.nodes.filter((e) => e.slug !== "uncategorized"); // TODO: Remove Smple Category */
-  console.log("data.categories.nodes", data.categories.nodes);
-  return data.categories.nodes as ICategory[];
+  if (data) {
+    data?.categories?.nodes?.map(
+      (category: ICategory) => (category.selected = false),
+    );
+    /* data.categories.nodes.filter((e) => e.slug !== "uncategorized"); // TODO: Remove Smple Category */
+    console.log("data.categories.nodes", data.categories.nodes);
+    return data.categories.nodes as ICategory[];
+  }
+
+  return [];
 }

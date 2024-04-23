@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ICategory } from "../types/posts";
 import { IExpense } from "../types/expenses";
+import { getAllExpensesWithSlug } from "@/wp-api/queries/expenses";
 
 /* GLOBAL */
 
@@ -43,6 +44,7 @@ type ExpenseState = {
 };
 
 type ExpenseAction = {
+  getExpenses: () => Promise<void>;
   updateExpenses: (expenses: ExpenseState["expenses"]) => void;
   updateTotalIncome: () => void;
   updateTotalOutcome: () => void;
@@ -53,6 +55,16 @@ export const useExpenseStore = create<ExpenseState & ExpenseAction>()(
     expenses: [],
     totalIncome: 0,
     totalOutcome: 0,
+    getExpenses: async () => {
+      try {
+        const e = await getAllExpensesWithSlug();
+        set(() => ({
+          expenses: e,
+        }));
+      } catch (error) {
+        console.error("Error fetching expenses:", error);
+      }
+    },
     updateExpenses: (expenses) =>
       set(() => ({
         expenses: expenses,

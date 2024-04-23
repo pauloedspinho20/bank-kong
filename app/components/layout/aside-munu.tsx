@@ -5,18 +5,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-import {
-  Home,
-  LineChart,
-  Calculator,
-  Package,
-  Package2,
-  PanelLeft,
-  Search,
-  ShoppingCart,
-  User,
-  Users2,
-} from "lucide-react";
+import { Home, Calculator, PanelLeft, User } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   Tooltip,
@@ -26,6 +15,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import { ModeToggle } from "../mode-toggle";
+import UserMenu from "../user-menu";
 
 export const menuItems = [
   {
@@ -37,11 +27,6 @@ export const menuItems = [
     label: "Dashboard",
     value: "/dashboard",
     icon: <Calculator className="h-5 w-5" />,
-  },
-  {
-    label: "User",
-    value: "/user",
-    icon: <User className="h-5 w-5" />,
   },
 ];
 
@@ -62,7 +47,7 @@ export default function AsideMenu() {
             <nav className="grid gap-6 text-lg font-medium">
               {menuItems?.map((item) => (
                 <Link
-                  key={`sheet-menu-${item}`}
+                  key={`sheet-menu-${item.value}`}
                   href={item.value}
                   className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                 >
@@ -73,6 +58,15 @@ export default function AsideMenu() {
             </nav>
           </SheetContent>
         </Sheet>
+        <div className="relative ml-auto flex-1 md:grow-0"></div>
+        <div
+          className={cn("hidden", {
+            flex: pathname !== "/",
+          })}
+        >
+          <ModeToggle />
+          <UserMenu />
+        </div>
       </header>
 
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -99,7 +93,8 @@ export default function AsideMenu() {
           ))}
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <ModeToggle></ModeToggle>
+          <UserMenu />
+          <ModeToggle />
         </nav>
       </aside>
     </TooltipProvider>

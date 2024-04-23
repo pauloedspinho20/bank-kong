@@ -18,7 +18,6 @@ interface Props {
 }
 
 export default function Index({ allPosts, preview }: Props) {
-  console.log("allPosts", allPosts);
   return (
     <Layout preview={preview}>
       <div className="flex min-h-screen w-full flex-col bg-muted/40">

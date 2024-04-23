@@ -58,13 +58,6 @@ export async function getAllExpensesWithSlug() {
         }
   `);
 
-  console.log("data.expensessss", data.expenses.edges[0]);
-
-  console.log(
-    "transformGraphQLResponse",
-    transformGraphQLResponse(data.expenses, "expenses"),
-  );
-
   return transformGraphQLResponse(data.expenses, "expenses") as IExpense[];
 }
 

@@ -11,8 +11,8 @@ export default function Hero() {
         <Animation className="lg:ml-40" />
       </div>
 
-      <section className="position-absolute container grid place-items-center py-20 md:py-32 lg:grid-cols-2">
-        <div className="space-y-6 px-20 text-center lg:text-start ">
+      <section className="position-absolute container grid place-items-center py-20 md:grid-cols-2 md:py-32">
+        <div className="space-y-6 px-5 text-center sm:px-10 md:text-start lg:px-20">
           <main className="text-5xl font-bold">
             <h1 className="text-primary">Wordpress + Next.js</h1>
             <h4 className="">Tailwind CSS + shadcn/ui</h4>

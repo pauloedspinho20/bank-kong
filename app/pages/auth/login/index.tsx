@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import AsideMenu from "@/components/layout/aside-munu";
+import Layout from "@/components/layout";
 import background from "./assets/background.jpg";
 
 export default function Login() {
@@ -76,91 +78,97 @@ export default function Login() {
   }
 
   return (
-    <form method="post" action="/api/auth/callback/credentials">
-      <div className="w-full lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
-        <div className="flex items-center justify-center py-12">
-          <div className="mx-auto grid w-[350px] gap-6">
-            <div className="grid gap-2 text-center">
-              <h1 className="text-3xl font-bold">Login</h1>
-              <p className="text-balance text-muted-foreground">
-                Enter your email below to login to your account
-              </p>
-            </div>
-
-            {formError && (
-              <Alert variant="destructive">
-                <ExclamationTriangleIcon className="h-4 w-4" />
-                <AlertDescription>{formError}</AlertDescription>
-              </Alert>
-            )}
-            <div className="grid gap-4">
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="username"
-                  type="username"
-                  value={username}
-                  placeholder="paulopinho"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setUsername(e.target.value);
-                    validateUsername(e.target.value);
-                  }}
-                  required
-                />
+    <Layout preview={false}>
+      <form method="post" action="/api/auth/callback/credentials">
+        <AsideMenu />
+        <div className="w-full sm:py-4 sm:pl-14 lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
+          <div className="flex items-center justify-center py-12">
+            <div className="mx-auto grid w-[350px] gap-6">
+              <div className="grid gap-2 text-center">
+                <h1 className="text-3xl font-bold">Login</h1>
+                <p className="text-balance text-muted-foreground">
+                  Enter your email below to login to your account.
+                </p>
+                <small>Test user: postlight</small>
+                <small>Test password: postlight</small>
               </div>
-              <div className="grid gap-2">
-                <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
+
+              {formError && (
+                <Alert variant="destructive">
+                  <ExclamationTriangleIcon className="h-4 w-4" />
+                  <AlertDescription>{formError}</AlertDescription>
+                </Alert>
+              )}
+              <div className="grid gap-4">
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="username"
+                    type="username"
+                    value={username}
+                    placeholder="e.g. paulopinho"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setUsername(e.target.value);
+                      validateUsername(e.target.value);
+                    }}
+                    required
+                  />
                 </div>
-                <Input
-                  id="password"
-                  type="password"
-                  value={password}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setPassword(e.target.value);
-                    validatePassword(e.target.value);
-                  }}
-                  required
-                />
+                <div className="grid gap-2">
+                  <div className="flex items-center">
+                    <Label htmlFor="password">Password</Label>
+                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    value={password}
+                    placeholder="Type a strong password"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      setPassword(e.target.value);
+                      validatePassword(e.target.value);
+                    }}
+                    required
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  variant="outline"
+                  className="w-full"
+                  onClick={handleLogin}
+                  disabled={!isUsernameValid || !isPasswordValid || submitting}
+                >
+                  Login
+                </Button>
               </div>
-              <Button
-                type="submit"
-                variant="outline"
-                className="w-full"
-                onClick={handleLogin}
-                disabled={!isUsernameValid || !isPasswordValid || submitting}
-              >
-                Login
-              </Button>
-            </div>
 
-            <div className="mt-4 text-center text-sm">
+              {/*      <div className="mt-4 text-center text-sm">
               Don&apos;t have an account?{" "}
               <Link href="/signup" className="underline">
                 Sign up
               </Link>
-            </div>
+            </div> */}
 
-            <div className="text-center text-sm">
+              {/*  <div className="text-center text-sm">
               <Link
                 href="/forgot-password"
                 className="ml-auto inline-block text-sm underline"
               >
                 Forgot your password?
               </Link>
+            </div> */}
             </div>
           </div>
+          <div className="hidden bg-muted lg:block">
+            <Image
+              src={background.src}
+              alt="Login"
+              width={background.width}
+              height={background.height}
+              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+            />
+          </div>
         </div>
-        <div className="hidden bg-muted lg:block">
-          <Image
-            src={background.src}
-            alt="Login"
-            width={background.width}
-            height={background.height}
-            className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          />
-        </div>
-      </div>
-    </form>
+      </form>
+    </Layout>
   );
 }

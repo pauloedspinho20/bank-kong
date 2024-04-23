@@ -29,12 +29,19 @@ import { mutateExpense } from "@/wp-api/mutations/expenses";
 
 import { formatToEuro, getFormatedDate, getFormatedTime } from "@/utils/format";
 import Expense from "./expense";
+import { IExpense } from "@/types/expenses";
 
-export default function ExpensesTable() {
+interface Props {
+  filterCategory: number | null;
+}
+
+export default function ExpensesTable({ filterCategory }: Props) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   /* Expenses state */
   const expenses = useExpenseStore((state) => state.expenses);
+  const [filteredExpenses, setFilteredExpenses] =
+    useState<IExpense[]>(expenses);
   const updateExpenses = useExpenseStore((state) => state.updateExpenses);
   const totalIncome = useExpenseStore((state) => state.totalIncome);
   const totalOutcome = useExpenseStore((state) => state.totalOutcome);
@@ -42,12 +49,27 @@ export default function ExpensesTable() {
   const updateTotalOutcome = useExpenseStore(
     (state) => state.updateTotalOutcome,
   );
-  const [editMode, setEditMode] = useState<string | null>(null);
+  const [editMode, setEditMode] = useState<number | null>(null);
   const [balance, setBalance] = useState<string>("0");
 
+  /* Format values to currency */
   useEffect(() => {
     setBalance(formatToEuro(totalIncome - totalOutcome));
   }, [totalIncome, totalOutcome]);
+
+  /* Filter expenses */
+  useEffect(() => {
+    if (filterCategory) {
+      const filter = expenses?.filter(
+        (e) => e.categories?.[0].databaseId === filterCategory,
+      );
+
+      setFilteredExpenses(filter);
+    } else {
+      setFilteredExpenses(expenses);
+    }
+  }, [filterCategory, expenses]);
+
   /* Delete Expense */
   const handleDeleteExpense = async (e: any, databaseId: number) => {
     e.preventDefault();
@@ -58,11 +80,14 @@ export default function ExpensesTable() {
         requestType: "delete",
       });
 
-      const updatedExpenses = expenses.filter((d) => d.id !== data.id);
+      const updatedExpenses = expenses.filter(
+        (d) => d.databaseId !== data.databaseId,
+      );
       if (data) {
         updateExpenses(updatedExpenses);
         updateTotalIncome();
         updateTotalOutcome();
+        setIsDialogOpen(false);
       } else {
         console.log("error");
       }
@@ -71,7 +96,7 @@ export default function ExpensesTable() {
     }
   };
 
-  return expenses?.length > 0 ? (
+  return filteredExpenses && filteredExpenses?.length > 0 ? (
     <>
       <Table className="">
         <TableHeader>
@@ -85,9 +110,9 @@ export default function ExpensesTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {expenses.map((expense, key) => (
+          {filteredExpenses.map((expense, key) => (
             <TableRow
-              key={`expense-${expense.id}`}
+              key={`expense-${expense.databaseId}`}
               className={cn("h-[82px]", {
                 "bg-accent": key % 2 === 0,
               })}
@@ -145,14 +170,14 @@ export default function ExpensesTable() {
                 <div className="flex flex-row justify-end gap-1">
                   {/* EDIT */}
                   <AlertDialog
-                    open={isDialogOpen && editMode === expense.id}
+                    open={isDialogOpen && editMode === expense.databaseId}
                     onOpenChange={setIsDialogOpen}
                   >
                     <AlertDialogTrigger asChild>
                       <Button
                         variant="outline"
                         size="xs"
-                        onClick={() => setEditMode(expense.id || "")}
+                        onClick={() => setEditMode(expense.databaseId || 0)}
                       >
                         <Pencil2Icon />
                       </Button>
@@ -169,6 +194,7 @@ export default function ExpensesTable() {
                       </AlertDialogHeader>
                     </AlertDialogContent>
                   </AlertDialog>
+
                   {/* DELETE */}
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
@@ -180,8 +206,7 @@ export default function ExpensesTable() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This action cannot be undone. This will permanently
-                          delete your data from our servers.
+                          This action cannot be undone.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

@@ -3,6 +3,8 @@ import { GetStaticProps } from "next";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
+
+import { buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -18,10 +19,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AsideMenu from "@/components/layout/aside-munu";
 import Layout from "@/components/layout";
+import FilterCategories from "@/components/filter-categories";
 import Header from "@/components/layout/header";
 import Expense from "@/components/expense";
 import ExpensesTable from "@/components/expenses-table";
@@ -53,6 +53,7 @@ export default function Dashboard({
   const { data: session, status } = useSession();
   const expenses = useExpenseStore((state) => state.expenses);
   const updateCategories = useGlobalStore((state) => state.updateCategories);
+  const [filterCategory, setFilterCategory] = useState<number | null>(null);
   const totalIncome = useExpenseStore((state) => state.totalIncome);
   const totalOutcome = useExpenseStore((state) => state.totalOutcome);
   const updateExpenses = useExpenseStore((state) => state.updateExpenses);
@@ -98,12 +99,12 @@ export default function Dashboard({
                               <CardDescription className="font-bol mt-8 text-lg">
                                 Total Balance
                               </CardDescription>
-                              <CardTitle className="text-nowrap text-2xl xl:text-3xl">
+                              <CardTitle className="text-nowrap text-3xl xl:text-4xl">
                                 {formatToEuro(totalIncome - totalOutcome)}
                               </CardTitle>
                             </div>
 
-                            <div className="mt-5 flex flex-row gap-4 text-center">
+                            <div className="mt-5 flex flex-row gap-5 text-center md:gap-10">
                               <div className="mb-4">
                                 <CardDescription className="font-bold text-green-500">
                                   Total Income
@@ -132,10 +133,10 @@ export default function Dashboard({
 
                               <div>
                                 <div className="mb-4">
-                                  <CardDescription className="font-bold text-red-400">
+                                  <CardDescription className="font-bold text-red-500">
                                     Total Outcome
                                   </CardDescription>
-                                  <CardTitle className="text-xl xl:text-2xl">
+                                  <CardTitle className="text-xl xl:text-3xl">
                                     {formatToEuro(totalOutcome)}
                                   </CardTitle>
                                 </div>
@@ -163,18 +164,24 @@ export default function Dashboard({
                     </div>
                   </Card>
                 </div>
-                <Tabs defaultValue="week">
-                  <div className="flex items-center"></div>
-                  <TabsContent value="week" className="mb-20">
-                    <Card x-chunk="dashboard-05-chunk-3">
-                      <CardHeader className="px-7">
-                        <CardTitle>Expenses</CardTitle>
-                        <CardDescription>Recent expenses</CardDescription>
-                      </CardHeader>
-                      <ExpensesTable />
-                    </Card>
-                  </TabsContent>
-                </Tabs>
+
+                <div className="flex items-center">
+                  <div className="ml-auto flex items-center gap-2">
+                    <FilterCategories
+                      filterCategory={filterCategory}
+                      onFilterCategoryChange={setFilterCategory}
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-20 mt-4">
+                  <Card x-chunk="dashboard-05-chunk-3">
+                    <CardHeader className="px-7 text-right">
+                      <CardDescription>{`${expenses.length} results`}</CardDescription>
+                    </CardHeader>
+                    <ExpensesTable filterCategory={filterCategory} />
+                  </Card>
+                </div>
               </div>
             </main>
           </div>

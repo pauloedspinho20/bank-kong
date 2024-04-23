@@ -11,7 +11,6 @@ import { ICategory } from "@/types/posts";
 
 /* Create Expense with GraphQL  */
 export async function mutateExpense({
-  id,
   databaseId,
   title,
   content,
@@ -27,7 +26,6 @@ export async function mutateExpense({
 
   if (requestType === "create") {
     postData = {
-      id: id,
       title: title,
       content: content,
       categories: categories?.map((category) => {
@@ -46,7 +44,6 @@ export async function mutateExpense({
   }
   if (requestType === "update") {
     postData = {
-      id: id,
       databaseId: databaseId,
       title: title,
       content: content,

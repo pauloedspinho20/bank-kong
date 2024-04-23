@@ -4,7 +4,6 @@ import CurrencyInput from "react-currency-input-field";
 import { PlusIcon } from "@radix-ui/react-icons";
 
 import { Button, buttonVariants } from "@/components/ui/button";
-import { DialogClose } from "@/components/ui/dialog";
 import { Input, InputClasses } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -46,13 +45,16 @@ export default function Expense({
   const updateCategories = useGlobalStore((state) => state.updateCategories);
   const [newCategory, setNewCategory] = useState<string>("");
   const [isAddNewCategory, setIsAddNewCategory] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>();
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    (expense?.categories && expense?.categories[0]?.id) || "",
+  );
   const [categoriesCombobox, setCategoriesCombobox] = useState<
     ComboboxOptionProps[]
   >([]);
 
   /* Expenses state */
   const expenses = useExpenseStore((state) => state.expenses);
+  const getExpenses = useExpenseStore((state) => state.getExpenses);
   const updateExpenses = useExpenseStore((state) => state.updateExpenses);
   const updateTotalIncome = useExpenseStore((state) => state.updateTotalIncome);
   const updateTotalOutcome = useExpenseStore(
@@ -79,24 +81,32 @@ export default function Expense({
     setIsValueValid(valueToValidate > 0);
   };
 
+  /* Check if a IExpense is passed as a prop, to populate the modal */
   useEffect(() => {
-    if (expense && expense.categories && expense?.categories?.length > 0) {
+    if (
+      expense &&
+      expense.categories &&
+      expense.expense &&
+      expense?.categories?.length > 0
+    ) {
+      console.log("expense.formatedDate", expense.formatedDate);
       setTitle(expense.title || "");
+      validateTitle(expense.title || "");
       setValue(expense.expense.value);
-      console.log("WHYYYYY", expense.categories[0]?.id, {
-        label: expense.title || "",
-        value: expense.categories[0]?.id || "",
-      });
-      setSelectedCategory(expense.categories[0]?.id);
+      validateValue(expense.expense.value);
+      setSelectedDate(expense.formatedDate);
+      setSelectedCategory(expense.categories[0]?.id || "");
       setType(expense.expense.type);
     }
   }, [expense]);
 
+  /* Set combobox label and value */
   useEffect(() => {
     setCategoriesCombobox([]);
     setCategoriesCombobox(categoriesToSelectOptions(categories));
   }, [categories]);
 
+  /* Set date */
   const handleDateChange = (date: Date | undefined) => {
     setSelectedDate(date);
   };
@@ -127,18 +137,16 @@ export default function Expense({
         requestType: "create",
       });
 
-      const updatedExpenses = [data, ...expenses];
-      updatedExpenses.sort((a, b) => {
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      });
-
       if (data) {
+        const updatedExpenses = [data, ...expenses];
+        updatedExpenses.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+
         setSent(true);
-        setTitle("");
-        setValue(0);
-        setSelectedCategory("");
         updateExpenses(updatedExpenses);
         updateTotalIncome();
+        updateTotalOutcome();
         isDialogOpen(false);
       } else {
         setFormError(data.statusText);
@@ -152,7 +160,15 @@ export default function Expense({
   };
 
   /* Update Expense */
-  const handleUpdateExpense = async (e: any, id: string) => {
+  interface HandleUpdateExpenseProps {
+    e: any;
+    databaseId: number;
+  }
+
+  const handleUpdateExpense = async ({
+    e,
+    databaseId,
+  }: HandleUpdateExpenseProps) => {
     e.preventDefault();
     setSubmitting(true);
     setFormError("");
@@ -168,7 +184,7 @@ export default function Expense({
       );
 
       const data = await mutateExpense({
-        id,
+        databaseId,
         title,
         content: "",
         categories: selectedCategories,
@@ -180,12 +196,10 @@ export default function Expense({
 
       if (data) {
         setSent(true);
-        setTitle("");
-        setValue(0);
-        setSelectedCategory("");
-        updateExpenses([data, ...expenses]);
+        getExpenses();
         updateTotalIncome();
         updateTotalOutcome();
+        isDialogOpen(false);
       } else {
         setFormError(data.statusText);
       }
@@ -237,7 +251,6 @@ export default function Expense({
   };
 
   return (
-    // New expense
     <TooltipProvider>
       <div className={className}>
         <form onSubmit={handleSubmitExpense}>
@@ -296,7 +309,7 @@ export default function Expense({
               <div className="flex w-full flex-col items-start gap-4">
                 <Label className="font-bold">Date</Label>
                 <DatePicker
-                  defaultDate={expense?.formatedDate}
+                  defaultDate={selectedDate}
                   onDateChange={handleDateChange}
                 />
               </div>
@@ -311,7 +324,7 @@ export default function Expense({
                       <Combobox
                         className="mr-3 w-full"
                         name="category"
-                        selectedValue={(value) => value}
+                        selectedValue={(value) => setSelectedCategory(value)}
                         placeholder="Categories"
                         options={categoriesCombobox}
                         value={selectedCategory}
@@ -371,6 +384,7 @@ export default function Expense({
               </div>
             </div>
 
+            {/* TYPE */}
             <div className="mb-5 flex flex-col items-start gap-4">
               <Label className="font-bold">Type</Label>
               <RadioGroup defaultValue="option-income">
@@ -395,6 +409,7 @@ export default function Expense({
               </RadioGroup>
             </div>
 
+            {/* ACTIONS */}
             <div className="mt-5 flex items-center justify-center gap-4">
               <Button
                 className="flex-1"
@@ -405,14 +420,30 @@ export default function Expense({
                 Close
               </Button>
 
-              <Button
-                className="flex-1"
-                disabled={!isTitleValid || !isValueValid || submitting}
-                size="md"
-                onClick={handleSubmitExpense}
-              >
-                Save
-              </Button>
+              {expense && expense?.databaseId ? (
+                <Button
+                  className="flex-1"
+                  disabled={!isTitleValid || !isValueValid || submitting}
+                  size="md"
+                  onClick={(e) =>
+                    handleUpdateExpense({
+                      e,
+                      databaseId: expense.databaseId || 0,
+                    })
+                  }
+                >
+                  Edit
+                </Button>
+              ) : (
+                <Button
+                  className="flex-1"
+                  disabled={!isTitleValid || !isValueValid || submitting}
+                  size="md"
+                  onClick={handleSubmitExpense}
+                >
+                  Save
+                </Button>
+              )}
             </div>
           </div>
         </form>

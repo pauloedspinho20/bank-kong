@@ -23,7 +23,6 @@ export function transformGraphQLResponse(data: any, type: string) {
           author: author.node,
           categories: categories?.edges?.map(({ node }: any) => node),
           formatedDate: dateStringToDate(node.date).toISOString(),
-          // formatedDates: dateStringToDate(node.date).toUTCString(),
         };
       default:
         return {

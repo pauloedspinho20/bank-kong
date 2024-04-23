@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-/* import * as React from "react"; */
 import { CalendarIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 
@@ -57,6 +56,7 @@ export default function DatePicker({
           selected={date}
           onSelect={handleDateSelect}
           initialFocus
+          toDate={new Date()}
         />
       </PopoverContent>
     </Popover>

@@ -143,7 +143,7 @@ export async function getAllPostsForHome(preview: boolean) {
       },
     },
   );
-  //return data?.posts;
+
   return transformGraphQLResponse(data?.posts, "posts") as IPost;
 }
 

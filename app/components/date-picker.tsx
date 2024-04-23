@@ -27,7 +27,6 @@ export default function DatePicker({
 }: Props) {
   const [date, setDate] = useState<Date>();
 
-  console.log("DATEPICKER", date);
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
     onDateChange(selectedDate);

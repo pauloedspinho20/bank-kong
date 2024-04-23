@@ -11,11 +11,12 @@ import { ICategory } from "@/types/posts";
 
 /* Create Expense with GraphQL  */
 export async function mutateExpense({
+  id,
   databaseId,
   title,
   content,
   categories,
-  date,
+  formatedDate,
   value,
   type,
   requestType,
@@ -26,12 +27,13 @@ export async function mutateExpense({
 
   if (requestType === "create") {
     postData = {
+      id: id,
       title: title,
       content: content,
       categories: categories?.map((category) => {
         return category.databaseId;
       }, []),
-      date: date,
+      date: formatedDate,
       status: "publish",
       post_type: "expense",
       acf: {
@@ -44,13 +46,14 @@ export async function mutateExpense({
   }
   if (requestType === "update") {
     postData = {
+      id: id,
       databaseId: databaseId,
       title: title,
       content: content,
       categories: categories?.map((category) => {
         return category.databaseId;
       }, []),
-      date: date,
+      date: formatedDate,
       status: "publish",
       post_type: "expense",
       acf: {
@@ -75,15 +78,13 @@ export async function mutateExpense({
     postData,
   });
 
-  console.log("fetchREST 222  ", data);
-  // Create and return IExpense from API data
-
   const cats = data?.categories?.map((cat: ICategory) => {
     return categories?.find((c) => c.databaseId === cat); // Get complete category object from global state
   });
-
+  // Create and return IExpense from API data
   if (data?.id) {
     const expense = {
+      id: data.id,
       databaseId: data.id,
       author: data.author,
       content: data.content.raw,

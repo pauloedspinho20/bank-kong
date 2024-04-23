@@ -3,7 +3,6 @@ import { GetStaticProps } from "next";
 import { useSession } from "next-auth/react";
 import { cn } from "@/lib/utils";
 import { PlusCircledIcon, MinusCircledIcon } from "@radix-ui/react-icons";
-import { File, ListFilter } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +13,6 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -92,88 +90,75 @@ export default function Dashboard({
                     className="sm:col-span-2"
                     x-chunk="dashboard-05-chunk-0"
                   >
-                    <div className="flex flex-col lg:flex-row">
+                    <div className="flex flex-col justify-center lg:flex-row">
                       <div>
-                        <CardHeader className="mb-2">
-                          <CardTitle>
-                            Welcome{" "}
-                            {status === "authenticated" && session.user.name}
-                          </CardTitle>
-                          <CardDescription className="max-w-lg text-balance leading-relaxed">
-                            If you're not logged in, the expenses will not be
-                            saved to the Wordpress database. Please{" "}
-                            <Link className="underline" href="/auth/login">
-                              login.
-                            </Link>
-                          </CardDescription>
-                        </CardHeader>
                         <CardFooter>
-                          <div className="flex gap-4">
-                            <DialogTrigger
-                              onClick={() => setExpenseType("income")}
-                              className={cn(
-                                buttonVariants({
-                                  variant: "green",
-                                }),
-                              )}
-                            >
-                              <PlusCircledIcon
-                                height={18}
-                                width={18}
-                                className="mr-3 "
-                              />
-                              Income
-                            </DialogTrigger>
-
-                            <DialogTrigger
-                              onClick={() => setExpenseType("outcome")}
-                              className={cn(
-                                buttonVariants({
-                                  variant: "red",
-                                  size: "md",
-                                }),
-                              )}
-                            >
-                              <MinusCircledIcon
-                                height={18}
-                                width={18}
-                                className="mr-3 "
-                              />
-                              Outcome
-                            </DialogTrigger>
-                          </div>
-                        </CardFooter>
-                      </div>
-                      <div>
-                        <CardHeader className="pb-2">
-                          <div className="flex flex-col gap-4 sm:flex-row sm:gap-10">
-                            <div>
-                              <CardDescription className="text-green-500">
-                                Income
-                              </CardDescription>
-                              <CardTitle className="text-lg xl:text-3xl">
-                                {formatToEuro(totalIncome)}
-                              </CardTitle>
-                            </div>
-                            <div>
-                              <CardDescription className="text-red-400">
-                                Outcome
-                              </CardDescription>
-                              <CardTitle className="text-lg xl:text-2xl">
-                                {formatToEuro(totalOutcome)}
-                              </CardTitle>
-                            </div>
-
-                            <div>
-                              <CardDescription className="font-bold text-white">
+                          <div className="flex flex-col">
+                            <div className="flex flex-col items-center justify-center">
+                              <CardDescription className="font-bol mt-8 text-lg">
                                 Total Balance
                               </CardDescription>
-                              <CardTitle className="text-nowrap text-xl xl:text-3xl">
+                              <CardTitle className="text-nowrap text-2xl xl:text-3xl">
                                 {formatToEuro(totalIncome - totalOutcome)}
                               </CardTitle>
                             </div>
+
+                            <div className="mt-5 flex flex-row gap-4 text-center">
+                              <div className="mb-4">
+                                <CardDescription className="font-bold text-green-500">
+                                  Total Income
+                                </CardDescription>
+                                <CardTitle className="text-xl xl:text-3xl">
+                                  {formatToEuro(totalIncome)}
+                                </CardTitle>
+
+                                <DialogTrigger
+                                  onClick={() => setExpenseType("income")}
+                                  className={cn(
+                                    buttonVariants({
+                                      variant: "green",
+                                      size: "lg",
+                                    }),
+                                  )}
+                                >
+                                  <PlusCircledIcon
+                                    height={18}
+                                    width={18}
+                                    className="mr-3"
+                                  />
+                                  Income
+                                </DialogTrigger>
+                              </div>
+
+                              <div>
+                                <div className="mb-4">
+                                  <CardDescription className="font-bold text-red-400">
+                                    Total Outcome
+                                  </CardDescription>
+                                  <CardTitle className="text-xl xl:text-2xl">
+                                    {formatToEuro(totalOutcome)}
+                                  </CardTitle>
+                                </div>
+                                <DialogTrigger
+                                  onClick={() => setExpenseType("outcome")}
+                                  className={cn(
+                                    buttonVariants({
+                                      variant: "red",
+                                      size: "lg",
+                                    }),
+                                  )}
+                                >
+                                  <MinusCircledIcon
+                                    height={18}
+                                    width={18}
+                                    className="mr-3 "
+                                  />
+                                  Outcome
+                                </DialogTrigger>
+                              </div>
+                            </div>
                           </div>
-                        </CardHeader>
+                        </CardFooter>
                       </div>
                     </div>
                   </Card>

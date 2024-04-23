@@ -1,3 +1,6 @@
+import Link from "next/link";
+import { buttonVariants } from "../ui/button";
+
 export default function About() {
   return (
     <section id="about" className="container py-10">
@@ -11,7 +14,7 @@ export default function About() {
                 </span>
                 Paulo Pinho
               </h2>
-              <p className="mt-4 text-xl text-muted-foreground">
+              <p className="mt-4 text-lg text-muted-foreground">
                 I'm Paulo Pinho, a Portuguese Frontend Web Developer (Fullstack
                 experience) with expertise in React.js, Next.js, Node.js, NFT
                 marketplaces, Smart Contracts and Web3. I've gained extensive
@@ -23,6 +26,17 @@ export default function About() {
             </div>
           </div>
         </div>
+      </div>
+      <div className="mt-10 flex flex-col items-center justify-center">
+        <Link
+          href="/dashboard"
+          className={`h-16 w-full text-xl md:w-1/3 ${buttonVariants({
+            variant: "secondary",
+            size: "xl",
+          })}`}
+        >
+          Go to Dashboard
+        </Link>
       </div>
     </section>
   );

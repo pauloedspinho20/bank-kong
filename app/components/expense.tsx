@@ -31,7 +31,6 @@ import { ICategory } from "@/types/posts";
 interface Props {
   className?: string;
   expense?: IExpense | null;
-  editMode?: boolean;
   isDialogOpen?: (value: boolean) => void;
   defaultType?: "income" | "outcome";
 }
@@ -47,9 +46,9 @@ export default function Expense({
   const updateCategories = useGlobalStore((state) => state.updateCategories);
   const [newCategory, setNewCategory] = useState<string>("");
   const [isAddNewCategory, setIsAddNewCategory] = useState<boolean>(false);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>();
   const [categoriesCombobox, setCategoriesCombobox] = useState<
-    ComboboxOptionProps[] | []
+    ComboboxOptionProps[]
   >([]);
 
   /* Expenses state */
@@ -73,7 +72,7 @@ export default function Expense({
 
   /* Form Validation*/
   const validateTitle = (nameToValidate: string) => {
-    setIsTitleValid(nameToValidate.length > 3);
+    setIsTitleValid(nameToValidate.length > 0);
   };
 
   const validateValue = (valueToValidate: number) => {
@@ -82,10 +81,13 @@ export default function Expense({
 
   useEffect(() => {
     if (expense && expense.categories && expense?.categories?.length > 0) {
-      console.log("EXO", expense);
       setTitle(expense.title || "");
       setValue(expense.expense.value);
-      setSelectedCategory(expense.categories[0]?.id || "");
+      console.log("WHYYYYY", expense.categories[0]?.id, {
+        label: expense.title || "",
+        value: expense.categories[0]?.id || "",
+      });
+      setSelectedCategory(expense.categories[0]?.id);
       setType(expense.expense.type);
     }
   }, [expense]);
@@ -119,9 +121,15 @@ export default function Expense({
         title,
         content: "",
         categories: selectedCategories,
+        formatedDate: selectedDate,
         value,
         type,
         requestType: "create",
+      });
+
+      const updatedExpenses = [data, ...expenses];
+      updatedExpenses.sort((a, b) => {
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
       });
 
       if (data) {
@@ -129,7 +137,7 @@ export default function Expense({
         setTitle("");
         setValue(0);
         setSelectedCategory("");
-        updateExpenses([data, ...expenses]);
+        updateExpenses(updatedExpenses);
         updateTotalIncome();
         isDialogOpen(false);
       } else {
@@ -204,7 +212,6 @@ export default function Expense({
 
       if (!repeatedCategory) {
         const data = await createCategory(newCategory);
-        console.log("handleSubmitCategory", data);
         const category = data?.createCategory?.category;
         if (category) {
           setSelectedCategory(category.id);
@@ -289,7 +296,7 @@ export default function Expense({
               <div className="flex w-full flex-col items-start gap-4">
                 <Label className="font-bold">Date</Label>
                 <DatePicker
-                  defaultDate={undefined}
+                  defaultDate={expense?.formatedDate}
                   onDateChange={handleDateChange}
                 />
               </div>
@@ -304,7 +311,7 @@ export default function Expense({
                       <Combobox
                         className="mr-3 w-full"
                         name="category"
-                        selectedValue={setSelectedCategory}
+                        selectedValue={(value) => value}
                         placeholder="Categories"
                         options={categoriesCombobox}
                         value={selectedCategory}
